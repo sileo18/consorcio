@@ -1,3 +1,4 @@
+/*
 package com.example.sileo.security;
 
 import com.example.sileo.domain.Usuario.Usuario;
@@ -33,7 +34,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             String token = recoveryToken(request); // Recupera o token do cabeçalho Authorization da requisição
             if (token != null) {
                 String subject = tokenService.getSubjectFromToken(token); // Obtém o assunto (neste caso, o nome de usuário) do token
-                Usuario user = usuarioRepository.findByEmail(subject).; // Busca o usuário pelo email (que é o assunto do token)
+                Usuario user = usuarioRepository.findByEmail(subject); // Busca o usuário pelo email (que é o assunto do token)
                 UserDetails userDetails = User.builder()
                         .username(user.getEmail())
                         .password(user.getSenha())
@@ -68,3 +69,4 @@ public class SecurityFilter extends OncePerRequestFilter {
         return !Arrays.asList(SecurityConfig.ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).contains(requestURI);
     }
 }
+*/

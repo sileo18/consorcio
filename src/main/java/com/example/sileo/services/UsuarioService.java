@@ -3,6 +3,7 @@ package com.example.sileo.services;
 import com.example.sileo.domain.Usuario.Usuario;
 import com.example.sileo.domain.Usuario.UsuarioRegisterDTO;
 import com.example.sileo.repositories.UsuarioRepository;
+import com.example.sileo.security.TokenService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +19,7 @@ public class UsuarioService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JwtTokenService jwtTokenService;
+    private TokenService jwtTokenService;
 
     @Transactional
     public Usuario register(UsuarioRegisterDTO usuarioRegisterDTO) {

@@ -60,9 +60,9 @@ public class Cota {
         return categoria;
     }
 
-    public void setCategoria(double categoria) {
-        this.categoria = categoria;
-    }
+   // public void setCategoria(double ) {
+   //     this.categoria = calcularCategoria();
+//}
 
     public int getCredito() {
         return credito;
@@ -112,9 +112,9 @@ public class Cota {
         this.grupo = grupo;
     }
 
-    public void calcularCategoria(int txAdm) {
-        this.categoria = this.credito + (this.credito * (txAdm / 200));
-    }
+   /* public void calcularCategoria() {
+        this.categoria = this.credito + (this.credito * (this.grupo.getTaxadeAdm() / 200));
+    }*/
 
     public void calcularParcela() {
         this.parcela = this.categoria / this.planoMeses;

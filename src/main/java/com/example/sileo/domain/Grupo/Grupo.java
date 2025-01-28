@@ -26,6 +26,9 @@ public class Grupo {
     @Column(name = "duracaoMeses", nullable = false)
     private int duracaoMeses;
 
+    @Column(name = "taxaAdm", nullable = false)
+    private int taxaAdm;
+
     @OneToMany(mappedBy = "grupo")
     private List<Cota> cotas;
 

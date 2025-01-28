@@ -29,4 +29,68 @@ public class CotaCreateDTO {
 
     @NotNull(message = "O campo grupo é obrigatório")
     private UUID grupoId;
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public double getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(double categoria) {
+        this.categoria = categoria;
+    }
+
+    public int getCredito() {
+        return credito;
+    }
+
+    public void setCredito(int credito) {
+        this.credito = credito;
+    }
+
+    public int getPlanoMeses() {
+        return planoMeses;
+    }
+
+    public void setPlanoMeses(int planoMeses) {
+        this.planoMeses = planoMeses;
+    }
+
+    public int getTotalPago() {
+        return totalPago;
+    }
+
+    public void setTotalPago(int totalPago) {
+        this.totalPago = totalPago;
+    }
+
+    public double getParcela() {
+        return parcela;
+    }
+
+    public void setParcela(double parcela) {
+        this.parcela = parcela;
+    }
+
+    public UUID getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(UUID usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public UUID getGrupoId() {
+        return grupoId;
+    }
+
+    public void setGrupoId(UUID grupoId) {
+        this.grupoId = grupoId;
+    }
 }

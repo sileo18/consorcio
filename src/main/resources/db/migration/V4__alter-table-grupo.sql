@@ -1,0 +1,1 @@
+ALTER TABLE grupo ADD COLUMN txAdmnistracao INT NOT NULL;

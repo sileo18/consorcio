@@ -7,18 +7,21 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.sileo.domain.Usuario.Usuario;
 
 import com.nimbusds.oauth2.sdk.id.Issuer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-
+@Service
 public class TokenService {
 
     private static final String SECRET = "segredo";
 
     private static final String EMISSOR  = "sileo-api";
 
+    @Bean
     public String generateToken(Usuario usuario) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET);
@@ -37,6 +40,7 @@ public class TokenService {
 
     }
 
+    @Bean
     public String getSubjectFromToken(String token) {
         try {
             // Define o algoritmo HMAC SHA256 para verificar a assinatura do token passando a chave secreta definida
@@ -51,10 +55,12 @@ public class TokenService {
         }
     }
 
+    @Bean
     private Instant creationDate() {
         return ZonedDateTime.now(ZoneId.of("America/Recife")).toInstant();
     }
 
+    @Bean
     private Instant expirationDate() {
         return ZonedDateTime.now(ZoneId.of("America/Recife")).plusHours(4).toInstant();
     }
