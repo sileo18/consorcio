@@ -2,8 +2,8 @@ package com.example.sileo.enums;
 
 public enum UserRole {
 
-    ADMIN(role:"admin"),
-    USER(role:"user");
+    ADMIN("admin"),
+    USER("user");
 
     private String role;
 

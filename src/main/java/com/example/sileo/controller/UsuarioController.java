@@ -2,16 +2,19 @@ package com.example.sileo.controller;
 
 
 import com.example.sileo.domain.Usuario.Usuario;
+import com.example.sileo.domain.Usuario.UsuarioLoginDTO;
 import com.example.sileo.domain.Usuario.UsuarioRegisterDTO;
 import com.example.sileo.services.UsuarioService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.AuthenticationManager;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -21,7 +24,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @Autowired
-    private AuthencticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @PostMapping
     public ResponseEntity<Usuario> register(@Valid @RequestBody UsuarioRegisterDTO usuarioRegisterDTO) {
