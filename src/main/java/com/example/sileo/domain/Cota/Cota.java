@@ -33,8 +33,12 @@ public class Cota {
     private double parcela;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id") // FK Key
     private Usuario usuario;
+
+    //Cota n ---- 1 Usuario
+    // Many to one
+    //Many quotas can have one user
 
     @ManyToOne
     @JoinColumn(name = "grupo_id", referencedColumnName = "id")

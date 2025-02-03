@@ -1,0 +1,1 @@
+ALTER TABLE grupo DROP COLUMN txAdmnistracao;

@@ -1,5 +1,6 @@
 package com.example.sileo.domain.Usuario;
 
+import com.example.sileo.domain.Cota.Cota;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Usuario implements UserDetails {
+public class Usuario {
 
     @Id
     @GeneratedValue
@@ -29,6 +30,14 @@ public class Usuario implements UserDetails {
     private String email;
     @Column(name = "senha", nullable = false, length = 100)
     private String senha;
+    @OneToMany(mappedBy = "usuario")
+    private List<Cota> cotas;
+
+    //Cota n ---- 1 Usuario
+    // One to many
+    //One user can have many quotas
+
+
 
 
 
@@ -72,38 +81,5 @@ public class Usuario implements UserDetails {
         this.senha = senha;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    }
 
-    @Override
-    public String getPassword() {
-        return getPassword();
-    }
-
-    @Override
-    public String getUsername() {
-        return getEmail();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

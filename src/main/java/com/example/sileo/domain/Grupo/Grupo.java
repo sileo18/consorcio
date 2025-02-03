@@ -3,6 +3,7 @@ package com.example.sileo.domain.Grupo;
 import com.example.sileo.domain.Cota.Cota;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Data // Cria os getters e setters
 
 public class Grupo {
 
@@ -26,9 +28,7 @@ public class Grupo {
     @Column(name = "duracaoMeses", nullable = false)
     private int duracaoMeses;
 
-    @Column(name = "taxaAdm", nullable = false)
-    private int taxaAdm;
-
+     // Uma cota tem um grupo
     @OneToMany(mappedBy = "grupo")
     private List<Cota> cotas;
 
