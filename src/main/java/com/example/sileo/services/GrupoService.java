@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GrupoService {
 
@@ -17,10 +19,15 @@ public class GrupoService {
     public Grupo create(GrupoCreateDTO grupoCreateDTO) {
         Grupo grupo = new Grupo();
         grupo.setCodigo(grupoCreateDTO.codigo);
-        grupo.setAdmnistracaoPorcentagem(grupoCreateDTO.admnistracaoPorcentagem);
+        grupo.setadmnistracaoPorcentagem(grupoCreateDTO.admnistracaoPorcentagem);
         grupo.setDuracaoMeses(grupoCreateDTO.duracaoMeses);
         return grupoRepository.save(grupo);
 
+    }
+
+    @Transactional
+    public List<Grupo> getAll() {
+        return grupoRepository.findAll();
     }
 
 }

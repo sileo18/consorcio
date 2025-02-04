@@ -4,14 +4,12 @@ import com.example.sileo.domain.Usuario.*;
 import com.example.sileo.repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-
-import static org.springframework.web.servlet.function.ServerResponse.notFound;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -22,30 +20,38 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UsuarioMapper usuarioMapper;
-
     @Transactional
     public Usuario register(UsuarioRegisterDTO usuarioRegisterDTO) {
-        Usuario usuario = usuarioMapper.toUsuario(usuarioRegisterDTO);
+        Usuario usuario = new Usuario();
+        usuario.setNome(usuarioRegisterDTO.getNome());
+        usuario.setEmail(usuarioRegisterDTO.getEmail());
+        usuario.setCpf(usuarioRegisterDTO.getCpf());
         usuario.setSenha(passwordEncoder.encode(usuarioRegisterDTO.getSenha()));
 
         return usuarioRepository.save(usuario);
     }
 
-    //Get All
     @Transactional
     public List<UsuarioGetAllDTO> getAll() {
         List<Usuario> usuarios = usuarioRepository.findAll();
-        return usuarioMapper.toUsuarioDTOs(usuarios);
+        return usuarios.stream().map(usuario -> {
+            UsuarioGetAllDTO dto = new UsuarioGetAllDTO();
+            dto.setId(usuario.getId());
+            dto.setNome(usuario.getNome());
+            dto.setEmail(usuario.getEmail());
+            dto.setCpf(usuario.getCpf());
+            return dto;
+        }).collect(Collectors.toList());
     }
 
-    //Update
     @Transactional
     public Usuario update(UUID id, UsuarioUpdateDTO usuarioUpdateDTO) {
-        if(usuarioRepository.existsById(id)) {
-            Usuario usuario = usuarioMapper.toUsuario(usuarioUpdateDTO);
+        if (usuarioRepository.existsById(id)) {
+            Usuario usuario = new Usuario();
             usuario.setId(id);
+            usuario.setNome(usuarioUpdateDTO.getNome());
+            usuario.setEmail(usuarioUpdateDTO.getEmail());
+            usuario.setCpf(usuarioUpdateDTO.getCpf());
             usuario.setSenha(passwordEncoder.encode(usuarioUpdateDTO.getSenha()));
             return usuarioRepository.save(usuario);
         } else {

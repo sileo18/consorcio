@@ -9,20 +9,8 @@ public class CotaCreateDTO {
     @NotNull(message = "O campo código é obrigatório")
     private String codigo;
 
-    @NotNull(message = "O campo categoria é obrigatório")
-    private double categoria;
-
     @NotNull(message = "O campo crédito é obrigatório")
     private int credito;
-
-    @NotNull(message = "O campo plano de meses é obrigatório")
-    private int planoMeses;
-
-    @NotNull(message = "O campo total pago é obrigatório")
-    private int totalPago;
-
-    @NotNull(message = "O campo parcela é obrigatório")
-    private double parcela;
 
     @NotNull(message = "O campo usuário é obrigatório")
     private UUID usuarioId;
@@ -38,13 +26,6 @@ public class CotaCreateDTO {
         this.codigo = codigo;
     }
 
-    public double getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(double categoria) {
-        this.categoria = categoria;
-    }
 
     public int getCredito() {
         return credito;
@@ -52,30 +33,6 @@ public class CotaCreateDTO {
 
     public void setCredito(int credito) {
         this.credito = credito;
-    }
-
-    public int getPlanoMeses() {
-        return planoMeses;
-    }
-
-    public void setPlanoMeses(int planoMeses) {
-        this.planoMeses = planoMeses;
-    }
-
-    public int getTotalPago() {
-        return totalPago;
-    }
-
-    public void setTotalPago(int totalPago) {
-        this.totalPago = totalPago;
-    }
-
-    public double getParcela() {
-        return parcela;
-    }
-
-    public void setParcela(double parcela) {
-        this.parcela = parcela;
     }
 
     public UUID getUsuarioId() {

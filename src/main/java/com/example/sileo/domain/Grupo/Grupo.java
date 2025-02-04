@@ -13,26 +13,26 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data // Cria os getters e setters
-
 public class Grupo {
 
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private UUID id;
+
     @Column(name = "codigo", nullable = false, length = 4)
     private String codigo;
-    @Column(name = "admnistracaoPorcentagem", nullable = false)
+
+    @Column(name = "admnistracaoporcentagem", nullable = false)
     private int admnistracaoPorcentagem;
-    @Column(name = "duracaoMeses", nullable = false)
+
+    @Column(name = "duracaomeses", nullable = false)
     private int duracaoMeses;
 
-     // Uma cota tem um grupo
     @OneToMany(mappedBy = "grupo")
     private List<Cota> cotas;
 
-
+    // Getters and setters
     public UUID getId() {
         return id;
     }
@@ -53,7 +53,7 @@ public class Grupo {
         return admnistracaoPorcentagem;
     }
 
-    public void setAdmnistracaoPorcentagem(int admnistracaoPorcentagem) {
+    public void setadmnistracaoPorcentagem(int admnistracaoPorcentagem) {
         this.admnistracaoPorcentagem = admnistracaoPorcentagem;
     }
 

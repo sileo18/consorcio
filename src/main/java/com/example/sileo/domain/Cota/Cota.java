@@ -19,17 +19,22 @@ public class Cota {
     @GeneratedValue
     private UUID id;
 
-    @Column(nullable = false, length = 4)
+    @Column(name = "codigo", nullable = false, length = 4)
     private String codigo;
-    @Column(nullable = false)
+
+    @Column(name = "categoria", nullable = false)
     private double categoria;
-    @Column(nullable = false)
+
+    @Column(name = "credito", nullable = false)
     private int credito;
-    @Column(nullable = false)
+
+    @Column(name = "planomeses", nullable = false)
     private int planoMeses;
-    @Column(nullable = false)
-    private int totalPago;
-    @Column(nullable = false)
+
+    @Column(name = "totalpago",nullable = false)
+    private double totalPago;
+
+    @Column(name = "parcela", nullable = false)
     private double parcela;
 
     @ManyToOne
@@ -64,9 +69,10 @@ public class Cota {
         return categoria;
     }
 
-   // public void setCategoria(double ) {
-   //     this.categoria = calcularCategoria();
-//}
+    public void setCategoria(int credito ) {
+        int administracao = this.grupo.getAdmnistracaoPorcentagem();
+        this.categoria = credito + (credito * administracao / 100);
+}
 
     public int getCredito() {
         return credito;
@@ -80,24 +86,24 @@ public class Cota {
         return planoMeses;
     }
 
-    public void setPlanoMeses(int planoMeses) {
-        this.planoMeses = planoMeses;
+    public void setPlanoMeses() {
+        this.planoMeses = this.grupo.getDuracaoMeses();
     }
 
-    public int getTotalPago() {
+    public double getTotalPago() {
         return totalPago;
     }
 
-    public void setTotalPago(int totalPago) {
-        this.totalPago = totalPago;
+    public void setTotalPago() {
+        this.totalPago = categoria;
     }
 
     public double getParcela() {
         return parcela;
     }
 
-    public void setParcela(double parcela) {
-        this.parcela = parcela;
+    public void setParcela() {
+        this.parcela = categoria / this.planoMeses;
     }
 
     public Usuario getUsuario() {
@@ -116,11 +122,5 @@ public class Cota {
         this.grupo = grupo;
     }
 
-   /* public void calcularCategoria() {
-        this.categoria = this.credito + (this.credito * (this.grupo.getTaxadeAdm() / 200));
-    }*/
 
-    public void calcularParcela() {
-        this.parcela = this.categoria / this.planoMeses;
-    }
 }
