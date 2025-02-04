@@ -12,7 +12,6 @@ public class UsuarioRegisterDTO {
     public String cpf;
     @NotNull(message = "O campo nome é obrigatório")
     @Size(max = 100, message = "O campo nome deve ter no máximo 100 caracteres")
-    @Min(value = 1, message = "O campo cpf deve ter no mínimo 11 caracteres")
     private String nome;
     @NotNull(message = "O campo email é obrigatório")
     @Email(message = "O campo email deve ser um email válido")
