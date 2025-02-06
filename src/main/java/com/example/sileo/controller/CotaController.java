@@ -59,4 +59,12 @@ public class CotaController {
         cotaService.delete(cotaId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/usuario/{usuarioId}")
+    @Operation(summary = "Get all Cotas by Usuario ID", description = "Get all Cotas related to a specific Usuario")
+    public ResponseEntity<List<Cota>> getCotasByUsuarioId(@PathVariable UUID usuarioId) {
+        List<Cota> cotas = cotaService.getCotasByUsuarioId(usuarioId);
+        return ResponseEntity.ok(cotas);
+    }
+
 }

@@ -118,5 +118,11 @@ public class CotaService {
 
     public List<Cota> getAllCotas() {
         return cotaRepository.findAll();
+    };
+
+    @Transactional
+    public List<Cota> getCotasByUsuarioId(UUID usuarioId) {
+        return cotaRepository.findByUsuarioId(usuarioId);
     }
+
 }
