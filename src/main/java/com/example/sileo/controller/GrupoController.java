@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/grupos")
@@ -33,5 +34,12 @@ public class GrupoController {
     public ResponseEntity<List<Grupo>> getAll() {
         List<Grupo> grupos = grupoService.getAll();
         return ResponseEntity.ok(grupos);
+    }
+
+    @DeleteMapping
+    @Operation(summary = "Delete a Grupo by id", description = "Delete a Grupo by id")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        grupoService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GrupoService {
@@ -28,6 +29,14 @@ public class GrupoService {
     @Transactional
     public List<Grupo> getAll() {
         return grupoRepository.findAll();
+    }
+
+    @Transactional
+    public void delete(UUID id) {
+        if(!grupoRepository.existsById(id)) {
+            throw new IllegalArgumentException("Grupo not found");
+        }
+        grupoRepository.deleteById(id);
     }
 
 }
