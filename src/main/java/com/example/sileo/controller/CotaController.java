@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -28,9 +29,27 @@ public class CotaController {
         return ResponseEntity.ok(cota);
     }
 
+    @GetMapping
+    public ResponseEntity<List<Cota>> getCotas() {
+        List<Cota> cotas = cotaService.getAllCotas();
+        return ResponseEntity.ok(cotas);
+    }
+
     @GetMapping("/{cotaId}")
     public ResponseEntity<CotaGetDTO> getCota(@PathVariable UUID cotaId) {
         CotaGetDTO cota = cotaService.getCota(cotaId);
         return ResponseEntity.ok(cota);
+    }
+
+    @GetMapping("/{codigo}")
+    public ResponseEntity<CotaGetDTO> getCota(@PathVariable String codigo) {
+        CotaGetDTO cota = cotaService.getCotaByCodigo(codigo);
+        return ResponseEntity.ok(cota);
+    }
+
+    @DeleteMapping("/{cotaId}")
+    public ResponseEntity<Void> deleteCota(@PathVariable UUID cotaId) {
+        cotaService.delete(cotaId);
+        return ResponseEntity.noContent().build();
     }
 }

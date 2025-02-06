@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -51,6 +52,7 @@ public class CotaService {
         return cotaRepository.save(cota);
     }
 
+    @Transactional
     public CotaGetDTO getCota(UUID cotaId) {
         Cota cota = cotaRepository.findById(cotaId)
                 .orElseThrow(() -> new IllegalArgumentException("Cota not found"));
@@ -75,5 +77,46 @@ public class CotaService {
                 grupoDTO,
                 usuarioDTO
         );
+    }
+
+    @Transactional
+    public CotaGetDTO getCotaByCodigo(String codigo) {
+        Cota cota = cotaRepository.findByCodigo(codigo)
+                .orElseThrow(() -> new IllegalArgumentException("Cota not found"));
+
+        GrupoGetDTO grupoDTO = new GrupoGetDTO(
+                cota.getGrupo().getCodigo(),
+                cota.getGrupo().getAdmnistracaoPorcentagem(),
+                cota.getGrupo().getDuracaoMeses()
+        );
+
+        UsuarioGetDTO usuarioDTO = new UsuarioGetDTO(
+                cota.getUsuario().getNome()
+        );
+
+        return new CotaGetDTO(
+                cota.getCodigo(),
+                cota.getCredito(),
+                cota.getPlanoMeses(),
+                cota.getTotalPago(),
+                cota.getParcela(),
+                cota.getCategoria(),
+                grupoDTO,
+                usuarioDTO
+        );
+    }
+
+    @Transactional
+    public void delete(UUID cotaId) {
+
+        if (!cotaRepository.existsById(cotaId)) {
+            throw new IllegalArgumentException("Cota not found");
+        }
+
+        cotaRepository.deleteById(cotaId);
+    }
+
+    public List<Cota> getAllCotas() {
+        return cotaRepository.findAll();
     }
 }
