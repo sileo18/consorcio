@@ -3,6 +3,7 @@ package com.example.sileo.controller;
 import com.example.sileo.domain.Grupo.Grupo;
 import com.example.sileo.domain.Grupo.GrupoCreateDTO;
 import com.example.sileo.services.GrupoService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class GrupoController {
     private GrupoService grupoService;
 
     @PostMapping
+    @Operation(summary = "Create a new Grupo", description = "Create a new Grupo")
     public ResponseEntity<Grupo> create(@RequestBody  @Valid  GrupoCreateDTO grupoCreateDTO) {
 
         Grupo novoGrupo = grupoService.create(grupoCreateDTO);
@@ -27,6 +29,7 @@ public class GrupoController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all Grupos", description = "Get all Grupos")
     public ResponseEntity<List<Grupo>> getAll() {
         List<Grupo> grupos = grupoService.getAll();
         return ResponseEntity.ok(grupos);

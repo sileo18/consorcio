@@ -4,6 +4,8 @@ import com.example.sileo.domain.Cota.Cota;
 import com.example.sileo.domain.Cota.CotaCreateDTO;
 import com.example.sileo.domain.Cota.CotaGetDTO;
 import com.example.sileo.services.CotaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.models.annotations.OpenAPI30;
 import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ public class CotaController {
     private CotaService cotaService;
 
     @PostMapping
+    @Operation(summary = "Create a new Cota", description = "Create a new Cota")
     public ResponseEntity<Cota> create(@Valid @RequestBody CotaCreateDTO cotaCreateDTO) {
 
         Cota cota = cotaService.create(cotaCreateDTO);
@@ -30,24 +33,28 @@ public class CotaController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all Cotas", description = "Get all Cotas")
     public ResponseEntity<List<Cota>> getCotas() {
         List<Cota> cotas = cotaService.getAllCotas();
         return ResponseEntity.ok(cotas);
     }
 
     @GetMapping("/{cotaId}")
+    @Operation(summary = "Get a Cota by id", description = "Get a Cota by id")
     public ResponseEntity<CotaGetDTO> getCota(@PathVariable UUID cotaId) {
         CotaGetDTO cota = cotaService.getCota(cotaId);
         return ResponseEntity.ok(cota);
     }
 
     @GetMapping("/{codigo}")
+    @Operation(summary = "Get a Cota by codigo", description = "Get a Cota by codigo")
     public ResponseEntity<CotaGetDTO> getCota(@PathVariable String codigo) {
         CotaGetDTO cota = cotaService.getCotaByCodigo(codigo);
         return ResponseEntity.ok(cota);
     }
 
     @DeleteMapping("/{cotaId}")
+    @Operation(summary = "Delete a Cota by id", description = "Delete a Cota by id")
     public ResponseEntity<Void> deleteCota(@PathVariable UUID cotaId) {
         cotaService.delete(cotaId);
         return ResponseEntity.noContent().build();
