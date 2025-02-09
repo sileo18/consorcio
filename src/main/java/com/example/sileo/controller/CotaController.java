@@ -64,6 +64,23 @@ public class CotaController {
     @Operation(summary = "Get all Cotas by Usuario ID", description = "Get all Cotas related to a specific Usuario")
     public ResponseEntity<List<Cota>> getCotasByUsuarioId(@PathVariable UUID usuarioId) {
         List<Cota> cotas = cotaService.getCotasByUsuarioId(usuarioId);
+
+        if(cotas == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(cotas);
+    }
+
+    @GetMapping("/grupo/{grupoId}")
+    @Operation(summary = "Get all Cotas by Grupo ID", description = "Get all Cotas related to a specific Grupo")
+    public ResponseEntity<List<Cota>> getCotasByGrupoId(@PathVariable UUID grupoId) {
+        List<Cota> cotas = cotaService.getCotasByGrupoId(grupoId);
+
+        if(cotas == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         return ResponseEntity.ok(cotas);
     }
 

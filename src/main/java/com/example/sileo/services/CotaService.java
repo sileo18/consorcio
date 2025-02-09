@@ -122,7 +122,24 @@ public class CotaService {
 
     @Transactional
     public List<Cota> getCotasByUsuarioId(UUID usuarioId) {
-        return cotaRepository.findByUsuarioId(usuarioId);
+        List<Cota> cotas = cotaRepository.findByUsuarioId(usuarioId);
+
+        if(cotas.isEmpty()) {
+            return null;
+        }
+
+        return cotas;
+    }
+
+    @Transactional
+    public List<Cota> getCotasByGrupoId(UUID id) {
+        List<Cota> cotas = cotaRepository.findByGrupoId(id);
+
+        if(cotas.isEmpty()) {
+            return null;
+        }
+
+        return cotas;
     }
 
 }
