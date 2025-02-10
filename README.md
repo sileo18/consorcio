@@ -36,6 +36,8 @@ Consorcio é uma aplicação baseada em Java projetada para gerenciar cotas, gru
 - PostgreSQL 12 ou superior
 
 
-https://github.com/user-attachments/assets/5525ac4b-0fbb-4def-b334-1f1d9d7faa76
+https://github.com/user-attachments/assets/88eb87cd-cd37-4329-a173-ff16a3771a0b
+
+
 
 
