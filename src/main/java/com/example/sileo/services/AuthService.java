@@ -43,11 +43,14 @@ public class AuthService {
 
         if(usuario.isEmpty()) {
 
+            System.out.println("Registrando usuário: " + registerDTO);
+
             Usuario novoUsuario = new Usuario();
 
             novoUsuario.setEmail(registerDTO.getEmail());
-            novoUsuario.setSenha(passwordEncoder.encode(registerDTO.getSenha()));
             novoUsuario.setNome(registerDTO.getNome());
+            novoUsuario.setCpf(registerDTO.getCpf());
+            novoUsuario.setSenha(passwordEncoder.encode(registerDTO.getSenha()));
 
             usuarioRepository.save(novoUsuario);
 

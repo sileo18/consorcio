@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     @Autowired
@@ -39,13 +40,13 @@ public class AuthController {
     @Operation(summary = "Create a new Usuario", description = "Create a new Usuario")
     public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterRequestDTO usuario) {
 
-        RegisterResponseDTO novoUsuario = authService.register(usuario);
-
-        if(novoUsuario == null) {
-            return ResponseEntity.badRequest().build();
+        try {
+            System.out.println("Estou no log" + usuario);
+            RegisterResponseDTO novoUsuario = authService.register(usuario);
+            return ResponseEntity.ok(novoUsuario);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new RegisterResponseDTO(e.getMessage(), null));
         }
-
-        return ResponseEntity.ok(novoUsuario);
     }
 
 }

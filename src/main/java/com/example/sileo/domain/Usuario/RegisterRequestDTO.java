@@ -1,44 +1,54 @@
 package com.example.sileo.domain.Usuario;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class RegisterRequestDTO {
-    @NotNull(message = "O campo cpf é obrigatório")
-    @Size(max = 11, message = "O campo cpf deve ter no máximo 11 caracteres")
-    @Min(value = 11, message = "O campo cpf deve ter no mínimo 11 caracteres")
-    public String cpf;
-    @NotNull(message = "O campo nome é obrigatório")
-    @Size(max = 100, message = "O campo nome deve ter no máximo 100 caracteres")
+
+    @NotBlank(message = "CPF is mandatory")
+    private String cpf;
+
+    @NotBlank(message = "Name is mandatory")
     private String nome;
-    @NotNull(message = "O campo email é obrigatório")
-    @Email(message = "O campo email deve ser um email válido")
+
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email is mandatory")
     private String email;
-    @NotNull(message = "O campo senha é obrigatório")
+
+    @NotBlank(message = "Password is mandatory")
+    @Size(min = 6, message = "Password should have at least 6 characters")
     private String senha;
 
-    public RegisterRequestDTO(String email, String senha, String nome, String cpf) {
-        this.email = email;
-        this.senha = senha;
-        this.nome = nome;
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getSenha() {
-        return senha;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public String getCpf() {
-        return cpf;
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }
