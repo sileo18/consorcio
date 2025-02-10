@@ -2,7 +2,6 @@ package com.example.sileo.controller;
 
 
 import com.example.sileo.domain.Usuario.Usuario;
-import com.example.sileo.domain.Usuario.UsuarioRegisterDTO;
 import com.example.sileo.domain.Usuario.UsuarioUpdateDTO;
 import com.example.sileo.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,16 +19,6 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
-
-    @PostMapping
-    @Operation(summary = "Create a new Usuario", description = "Create a new Usuario")
-    public ResponseEntity<Usuario> register(@Valid @RequestBody UsuarioRegisterDTO usuarioRegisterDTO) {
-
-        Usuario usuario = usuarioService.register(usuarioRegisterDTO);
-
-        return ResponseEntity.ok(usuario);
-
-    }
 
     @GetMapping
     @Operation(summary = "Get all Usuarios", description = "Get all Usuarios")

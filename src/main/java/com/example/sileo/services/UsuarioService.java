@@ -20,16 +20,6 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Transactional
-    public Usuario register(UsuarioRegisterDTO usuarioRegisterDTO) {
-        Usuario usuario = new Usuario();
-        usuario.setNome(usuarioRegisterDTO.getNome());
-        usuario.setEmail(usuarioRegisterDTO.getEmail());
-        usuario.setCpf(usuarioRegisterDTO.getCpf());
-        usuario.setSenha(passwordEncoder.encode(usuarioRegisterDTO.getSenha()));
-
-        return usuarioRepository.save(usuario);
-    }
 
     @Transactional
     public List<UsuarioGetAllDTO> getAll() {

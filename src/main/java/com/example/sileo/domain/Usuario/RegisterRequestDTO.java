@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class UsuarioRegisterDTO {
+public class RegisterRequestDTO {
     @NotNull(message = "O campo cpf é obrigatório")
     @Size(max = 11, message = "O campo cpf deve ter no máximo 11 caracteres")
     @Min(value = 11, message = "O campo cpf deve ter no mínimo 11 caracteres")
@@ -19,35 +19,26 @@ public class UsuarioRegisterDTO {
     @NotNull(message = "O campo senha é obrigatório")
     private String senha;
 
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
+    public RegisterRequestDTO(String email, String senha, String nome, String cpf) {
+        this.email = email;
+        this.senha = senha;
         this.nome = nome;
+        this.cpf = cpf;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getSenha() {
         return senha;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCpf() {
+        return cpf;
     }
 }
