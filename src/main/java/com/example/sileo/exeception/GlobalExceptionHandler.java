@@ -1,4 +1,4 @@
-package com.example.sileo.advice;
+package com.example.sileo.exeception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
