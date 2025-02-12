@@ -1,13 +1,17 @@
 package com.example.sileo.services;
 
 import com.example.sileo.domain.Usuario.*;
+import com.example.sileo.domain.Usuario_roles.UsuarioRoles;
+import com.example.sileo.enums.UserRole;
 import com.example.sileo.repositories.UsuarioRepository;
+import com.example.sileo.repositories.UsuarioRolesRepository;
 import com.example.sileo.security.TokenService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -21,6 +25,9 @@ public class AuthService {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private UsuarioRolesRepository usuarioRoleRepository;
 
     @Transactional
     public LoginResponseDTO login(LoginRequestDTO loginDTO) {
@@ -53,6 +60,13 @@ public class AuthService {
             novoUsuario.setSenha(passwordEncoder.encode(registerDTO.getSenha()));
 
             usuarioRepository.save(novoUsuario);
+
+            for (UserRole role : registerDTO.getRole()) {
+                UsuarioRoles usuarioRole = new UsuarioRoles();
+                usuarioRole.setUsuarioId(novoUsuario.getId());
+                usuarioRole.setRole(role.getRole());
+                usuarioRoleRepository.save(usuarioRole);
+            }
 
             String token = tokenService.generateToken(novoUsuario);
 

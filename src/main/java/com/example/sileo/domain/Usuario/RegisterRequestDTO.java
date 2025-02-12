@@ -1,8 +1,11 @@
 package com.example.sileo.domain.Usuario;
 
+import com.example.sileo.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.List;
 
 public class RegisterRequestDTO {
 
@@ -19,6 +22,9 @@ public class RegisterRequestDTO {
     @NotBlank(message = "Password is mandatory")
     @Size(min = 6, message = "Password should have at least 6 characters")
     private String senha;
+
+    @NotBlank(message = "Role is mandatory")
+    private List<UserRole> role;
 
     public String getCpf() {
         return cpf;
@@ -50,5 +56,13 @@ public class RegisterRequestDTO {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public List<UserRole> getRole() {
+        return role;
+    }
+
+    public void setRole(List<UserRole> role) {
+        this.role = role;
     }
 }

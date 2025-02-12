@@ -5,6 +5,7 @@ import com.example.sileo.repositories.UsuarioRepository;
 import com.example.sileo.security.TokenService;
 import com.example.sileo.services.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "Auth the user", description = "Auth the user")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginDTO) {
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginDTO) {
 
         LoginResponseDTO loginResponseDTO = authService.login(loginDTO);
 
@@ -34,7 +35,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @Operation(summary = "Create a new Usuario", description = "Create a new Usuario")
-    public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterRequestDTO usuario) {
+    public ResponseEntity<RegisterResponseDTO> register(@RequestBody @Valid RegisterRequestDTO usuario) {
 
             RegisterResponseDTO novoUsuario = authService.register(usuario);
 

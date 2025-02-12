@@ -1,6 +1,7 @@
 package com.example.sileo.domain.Usuario;
 
 import com.example.sileo.domain.Cota.Cota;
+import com.example.sileo.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Table(name = "usuario")
 @Entity
@@ -32,6 +34,10 @@ public class Usuario {
     private String senha;
     @OneToMany(mappedBy = "usuario")
     private List<Cota> cotas;
+
+    @CollectionTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "usuario_id"))
+    @Column(name = "role")
+    private List<UserRole> role;
 
     //Cota n ---- 1 Usuario
     // One to many
@@ -79,6 +85,20 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public List<UserRole> getRole() {
+        return role;
+    }
+
+    public void setRole(List<UserRole> role) {
+        this.role = role;
+    }
+
+    public List<GrantedAuthority> getAuthorities() {
+        return role.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRole()))
+                .collect(Collectors.toList());
     }
 
 
