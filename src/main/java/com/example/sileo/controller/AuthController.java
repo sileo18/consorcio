@@ -29,10 +29,6 @@ public class AuthController {
 
         LoginResponseDTO loginResponseDTO = authService.login(loginDTO);
 
-        if(loginResponseDTO == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
         return ResponseEntity.ok(loginResponseDTO);
     }
 
@@ -40,13 +36,10 @@ public class AuthController {
     @Operation(summary = "Create a new Usuario", description = "Create a new Usuario")
     public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterRequestDTO usuario) {
 
-        try {
-            System.out.println("Estou no log" + usuario);
             RegisterResponseDTO novoUsuario = authService.register(usuario);
+
             return ResponseEntity.ok(novoUsuario);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new RegisterResponseDTO(e.getMessage(), null));
-        }
+
     }
 
 }
