@@ -23,9 +23,6 @@ public class RegisterRequestDTO {
     @Size(min = 6, message = "Password should have at least 6 characters")
     private String senha;
 
-    @NotBlank(message = "Role is mandatory")
-    private List<UserRole> role;
-
     public String getCpf() {
         return cpf;
     }
@@ -58,11 +55,5 @@ public class RegisterRequestDTO {
         this.senha = senha;
     }
 
-    public List<UserRole> getRole() {
-        return role;
-    }
 
-    public void setRole(List<UserRole> role) {
-        this.role = role;
-    }
 }

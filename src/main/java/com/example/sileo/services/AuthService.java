@@ -7,12 +7,15 @@ import com.example.sileo.repositories.UsuarioRepository;
 import com.example.sileo.repositories.UsuarioRolesRepository;
 import com.example.sileo.security.TokenService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class AuthService {
@@ -44,13 +47,11 @@ public class AuthService {
     }
 
     @Transactional
-    public RegisterResponseDTO register(RegisterRequestDTO registerDTO) {
+    public RegisterResponseDTO register(@RequestBody @Valid RegisterRequestDTO registerDTO) {
 
-        Optional<Usuario> usuario = usuarioRepository.findByEmail(registerDTO.getEmail());
+        var usuario = usuarioRepository.findByEmail(registerDTO.getEmail());
 
         if(usuario.isEmpty()) {
-
-            System.out.println("Registrando usuário: " + registerDTO);
 
             Usuario novoUsuario = new Usuario();
 
@@ -58,21 +59,15 @@ public class AuthService {
             novoUsuario.setNome(registerDTO.getNome());
             novoUsuario.setCpf(registerDTO.getCpf());
             novoUsuario.setSenha(passwordEncoder.encode(registerDTO.getSenha()));
+            novoUsuario.setRoles(Set.of(usuarioRoleRepository.findByName(UserRole.USER.name())));
 
             usuarioRepository.save(novoUsuario);
-
-            for (UserRole role : registerDTO.getRole()) {
-                UsuarioRoles usuarioRole = new UsuarioRoles();
-                usuarioRole.setUsuarioId(novoUsuario.getId());
-                usuarioRole.setRole(role.getRole());
-                usuarioRoleRepository.save(usuarioRole);
-            }
 
             String token = tokenService.generateToken(novoUsuario);
 
             return new RegisterResponseDTO(token, novoUsuario.getNome());
         }
 
-        return null;
+        throw new RuntimeException("Usuário já cadastrado");
     }
 }

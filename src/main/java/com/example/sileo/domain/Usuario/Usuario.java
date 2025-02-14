@@ -1,6 +1,7 @@
 package com.example.sileo.domain.Usuario;
 
 import com.example.sileo.domain.Cota.Cota;
+import com.example.sileo.domain.Usuario_roles.UsuarioRoles;
 import com.example.sileo.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -35,16 +37,13 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<Cota> cotas;
 
-    @CollectionTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "usuario_id"))
-    @Column(name = "role")
-    private List<UserRole> role;
-
-    //Cota n ---- 1 Usuario
-    // One to many
-    //One user can have many quotas
-
-
-
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "tb_users_roles",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<UsuarioRoles> roles;
 
 
     public UUID getId() {
@@ -87,19 +86,14 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public List<UserRole> getRole() {
-        return role;
+    public Set<UsuarioRoles> getRoles() {
+        return roles;
     }
 
-    public void setRole(List<UserRole> role) {
-        this.role = role;
+    public void setRoles(Set<UsuarioRoles> roles) {
+        this.roles = roles;
     }
 
-    public List<GrantedAuthority> getAuthorities() {
-        return role.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRole()))
-                .collect(Collectors.toList());
-    }
 
 
 }
