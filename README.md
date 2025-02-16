@@ -37,8 +37,9 @@ Consorcio é uma aplicação baseada em Java projetada para gerenciar cotas, gru
 
 
 
+https://github.com/user-attachments/assets/15039c74-fdfc-45ca-9421-e2672dd8b7f4
 
-Uploading 2025-02-16-03-08-25.mp4…
+
 
 
 
