@@ -38,7 +38,7 @@ public class AuthController {
     @Operation(summary = "Create a new Usuario", description = "Create a new Usuario")
     public ResponseEntity<RegisterResponseDTO> register(@RequestBody @Valid RegisterRequestDTO usuario) {
 
-            RegisterResponseDTO novoUsuario = authService.register(usuario);
+            RegisterResponseDTO novoUsuario = authService.registerUser(usuario);
 
             return ResponseEntity.ok(novoUsuario);
 
@@ -47,8 +47,11 @@ public class AuthController {
     @PostMapping("/admin/register")
     @Operation(summary = "Register a new admin", description = "Create a new user with role ADMIN")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> registerAdmin(@Valid @RequestBody RegisterRequestDTO registerDTO) {
-        return ResponseEntity.ok("Admin registered");
+    public ResponseEntity<RegisterResponseDTO> registerAdmin(@Valid @RequestBody RegisterRequestDTO usuario) {
+
+        RegisterResponseDTO novoUsuario = authService.registerAdmin(usuario);
+
+        return ResponseEntity.ok(novoUsuario);
     }
 
 }

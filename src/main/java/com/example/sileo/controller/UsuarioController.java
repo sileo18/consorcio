@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -21,12 +22,14 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all Usuarios", description = "Get all Usuarios")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(usuarioService.getAll());
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('USER, ADMIN')")
     @Operation(summary = "Update a Usuario by id", description = "Update a Usuario by id")
     public ResponseEntity<Usuario> update(@Valid @RequestBody UsuarioUpdateDTO usuario,@PathVariable UUID id) {
 

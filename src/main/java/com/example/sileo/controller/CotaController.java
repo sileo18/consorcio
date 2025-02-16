@@ -67,7 +67,7 @@ public class CotaController {
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER, ADMIN')")
     @Operation(summary = "Get all Cotas by Usuario ID", description = "Get all Cotas related to a specific Usuario")
     public ResponseEntity<List<Cota>> getCotasByUsuarioId(@PathVariable UUID usuarioId) {
         List<Cota> cotas = cotaService.getCotasByUsuarioId(usuarioId);

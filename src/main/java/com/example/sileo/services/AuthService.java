@@ -48,7 +48,7 @@ public class AuthService {
     }
 
     @Transactional
-    public RegisterResponseDTO register(@Valid RegisterRequestDTO registerDTO) {
+    public RegisterResponseDTO registerUser(@Valid RegisterRequestDTO registerDTO) {
         var usuarioExistente = usuarioRepository.findByEmail(registerDTO.getEmail());
 
         if (usuarioExistente.isPresent()) {
@@ -62,8 +62,34 @@ public class AuthService {
         novoUsuario.setSenha(passwordEncoder.encode(registerDTO.getSenha()));
 
         // Corrigido para usar Optional
-        Roles role = roleRepository.findByName(UserRole.USER.name())
-                .orElseThrow(() -> new RuntimeException("Role não encontrada: " + UserRole.USER.name()));
+        Roles role = roleRepository.findByName(UserRole.ROLE_USER.name())
+                .orElseThrow(() -> new RuntimeException("Role não encontrada: " + UserRole.ROLE_USER.name()));
+
+        novoUsuario.setRoles(Set.of(role));
+
+        usuarioRepository.save(novoUsuario);
+
+        String token = tokenService.generateToken(novoUsuario);
+
+        return new RegisterResponseDTO(token, novoUsuario.getNome());
+    }
+
+    @Transactional
+    public RegisterResponseDTO registerAdmin(@Valid RegisterRequestDTO registerDTO) {
+        var usuarioExistente = usuarioRepository.findByEmail(registerDTO.getEmail());
+
+        if (usuarioExistente.isPresent()) {
+            throw new RuntimeException("Usuário já cadastrado");
+        }
+
+        Usuario novoUsuario = new Usuario();
+        novoUsuario.setEmail(registerDTO.getEmail());
+        novoUsuario.setNome(registerDTO.getNome());
+        novoUsuario.setCpf(registerDTO.getCpf());
+        novoUsuario.setSenha(passwordEncoder.encode(registerDTO.getSenha()));
+
+        Roles role = roleRepository.findByName(UserRole.ROLE_ADMIN.name())
+                .orElseThrow(() -> new RuntimeException("Role não encontrada: " + UserRole.ROLE_ADMIN.name()));
 
         novoUsuario.setRoles(Set.of(role));
 
