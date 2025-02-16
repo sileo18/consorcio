@@ -52,7 +52,7 @@ public class AuthService {
         var usuarioExistente = usuarioRepository.findByEmail(registerDTO.getEmail());
 
         if (usuarioExistente.isPresent()) {
-            throw new RuntimeException("Usuário já cadastrado");
+            throw new RuntimeException("Email já cadastrado");
         }
 
         Usuario novoUsuario = new Usuario();

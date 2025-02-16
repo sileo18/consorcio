@@ -9,6 +9,7 @@ import io.swagger.v3.oas.models.annotations.OpenAPI30;
 import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -67,26 +68,25 @@ public class CotaController {
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    @PreAuthorize("hasRole('USER, ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @Operation(summary = "Get all Cotas by Usuario ID", description = "Get all Cotas related to a specific Usuario")
-    public ResponseEntity<List<Cota>> getCotasByUsuarioId(@PathVariable UUID usuarioId) {
+    public ResponseEntity<?> getCotasByUsuarioId(@PathVariable UUID usuarioId) {
         List<Cota> cotas = cotaService.getCotasByUsuarioId(usuarioId);
 
-        if(cotas == null) {
-            return ResponseEntity.notFound().build();
+        if (cotas == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Você ainda não possui cotas cadastradas. Adquira uma já para começar a investir!");
         }
-
         return ResponseEntity.ok(cotas);
     }
 
     @GetMapping("/grupo/{grupoId}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all Cotas by Grupo ID", description = "Get all Cotas related to a specific Grupo")
-    public ResponseEntity<List<Cota>> getCotasByGrupoId(@PathVariable UUID grupoId) {
+    public ResponseEntity<?> getCotasByGrupoId(@PathVariable UUID grupoId) {
         List<Cota> cotas = cotaService.getCotasByGrupoId(grupoId);
 
-        if(cotas == null) {
-            return ResponseEntity.notFound().build();
+        if (cotas == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Grupo não possui cotas cadastradas.");
         }
 
         return ResponseEntity.ok(cotas);

@@ -28,7 +28,6 @@ public class RegisterRequestDTO {
     @Size(min = 6, message = "Password should have at least 6 characters")
     private String senha;
 
-    private Set<String> roles;
 
     public String getCpf() {
         return cpf;
@@ -62,11 +61,4 @@ public class RegisterRequestDTO {
         this.senha = senha;
     }
 
-    public Set<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
-    }
 }
