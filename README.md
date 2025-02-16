@@ -25,9 +25,9 @@ Consorcio é uma aplicação baseada em Java projetada para gerenciar cotas, gru
 - 🛠️ Gerenciar detalhes do grupo e associá-los às cotas.
 
 ## 🚀 Melhorias Futuras
-- **Controle de Acesso Baseado em Funções (RBAC)**: Implementar diferentes funções e permissões de usuário.
-- **Documentação da API**: Fornecer documentação abrangente da API usando Swagger ou uma ferramenta similar.
-- **Autenticação JWT**: Autenticar usuários com diferentes permissões.
+- **Controle de Acesso Baseado em Funções (RBAC)**: Implementar diferentes funções e permissões de usuário. --ALMOST DONE
+- **Documentação da API**: Fornecer documentação abrangente da API usando Swagger ou uma ferramenta similar. --DONE
+- **Autenticação JWT**: Autenticar usuários com diferentes permissões. --DONE
 
 ## 🏁 Começando
 ### Pré-requisitos
@@ -36,7 +36,12 @@ Consorcio é uma aplicação baseada em Java projetada para gerenciar cotas, gru
 - PostgreSQL 12 ou superior
 
 
-https://github.com/user-attachments/assets/88eb87cd-cd37-4329-a173-ff16a3771a0b
+
+https://github.com/user-attachments/assets/15039c74-fdfc-45ca-9421-e2672dd8b7f4
+
+
+
+
 
 
 
