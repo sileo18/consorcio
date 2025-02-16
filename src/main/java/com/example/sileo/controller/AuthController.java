@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +42,13 @@ public class AuthController {
 
             return ResponseEntity.ok(novoUsuario);
 
+    }
+
+    @PostMapping("/admin/register")
+    @Operation(summary = "Register a new admin", description = "Create a new user with role ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> registerAdmin(@Valid @RequestBody RegisterRequestDTO registerDTO) {
+        return ResponseEntity.ok("Admin registered");
     }
 
 }

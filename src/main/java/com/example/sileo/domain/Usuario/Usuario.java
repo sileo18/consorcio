@@ -2,6 +2,7 @@ package com.example.sileo.domain.Usuario;
 
 import com.example.sileo.domain.Cota.Cota;
 import com.example.sileo.domain.Roles.Roles;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class Usuario {
     @Column(name = "senha", nullable = false, length = 100)
     private String senha;
     @OneToMany(mappedBy = "usuario")
+    @JsonManagedReference
     private List<Cota> cotas;
 
     @ManyToMany(fetch = FetchType.EAGER)

@@ -26,6 +26,7 @@ public class CotaController {
 
     @PostMapping
     @Operation(summary = "Create a new Cota", description = "Create a new Cota")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Cota> create(@Valid @RequestBody CotaCreateDTO cotaCreateDTO) {
 
         Cota cota = cotaService.create(cotaCreateDTO);
@@ -34,6 +35,7 @@ public class CotaController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all Cotas", description = "Get all Cotas")
     public ResponseEntity<List<Cota>> getCotas() {
         List<Cota> cotas = cotaService.getAllCotas();
@@ -41,6 +43,7 @@ public class CotaController {
     }
 
     @GetMapping("/{cotaId}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get a Cota by id", description = "Get a Cota by id")
     public ResponseEntity<CotaGetDTO> getCota(@PathVariable UUID cotaId) {
         CotaGetDTO cota = cotaService.getCota(cotaId);
@@ -48,6 +51,7 @@ public class CotaController {
     }
 
     @GetMapping("/{codigo}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get a Cota by codigo", description = "Get a Cota by codigo")
     public ResponseEntity<CotaGetDTO> getCota(@PathVariable String codigo) {
         CotaGetDTO cota = cotaService.getCotaByCodigo(codigo);
@@ -55,6 +59,7 @@ public class CotaController {
     }
 
     @DeleteMapping("/{cotaId}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete a Cota by id", description = "Delete a Cota by id")
     public ResponseEntity<Void> deleteCota(@PathVariable UUID cotaId) {
         cotaService.delete(cotaId);
@@ -75,6 +80,7 @@ public class CotaController {
     }
 
     @GetMapping("/grupo/{grupoId}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all Cotas by Grupo ID", description = "Get all Cotas related to a specific Grupo")
     public ResponseEntity<List<Cota>> getCotasByGrupoId(@PathVariable UUID grupoId) {
         List<Cota> cotas = cotaService.getCotasByGrupoId(grupoId);

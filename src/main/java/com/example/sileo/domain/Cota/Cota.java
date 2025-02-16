@@ -2,6 +2,7 @@ package com.example.sileo.domain.Cota;
 
 import com.example.sileo.domain.Grupo.Grupo;
 import com.example.sileo.domain.Usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,7 @@ public class Cota {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id") // FK Key
+    @JsonBackReference
     private Usuario usuario;
 
     //Cota n ---- 1 Usuario

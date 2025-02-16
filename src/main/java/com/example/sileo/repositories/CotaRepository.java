@@ -13,4 +13,6 @@ public interface CotaRepository extends JpaRepository<Cota, UUID> {
     List<Cota> findByUsuarioId(UUID usuarioId);
 
     List<Cota> findByGrupoId(UUID grupoId);
+
+    Optional<Cota> findByCodigoAndGrupoId(String codigo, UUID grupoId);
 }

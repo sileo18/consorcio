@@ -32,6 +32,11 @@ public class CotaService {
     @Transactional
     public Cota create(CotaCreateDTO cotaCreateDTO) {
 
+        if (cotaRepository.findByCodigoAndGrupoId(cotaCreateDTO.getCodigo(), cotaCreateDTO.getGrupoId()).isPresent()) {
+            throw new IllegalArgumentException("Cota com o mesmo código já existe no grupo.");
+        }
+
+
         Cota cota = new Cota();
 
         Grupo grupo = grupoRepository.findById(cotaCreateDTO.getGrupoId())
