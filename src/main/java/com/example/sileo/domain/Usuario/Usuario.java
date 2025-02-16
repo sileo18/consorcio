@@ -1,20 +1,14 @@
 package com.example.sileo.domain.Usuario;
 
 import com.example.sileo.domain.Cota.Cota;
-import com.example.sileo.domain.Usuario_roles.UsuarioRoles;
-import com.example.sileo.enums.UserRole;
+import com.example.sileo.domain.Roles.Roles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
+
+import java.util.*;
+
 
 @Table(name = "usuario")
 @Entity
@@ -37,13 +31,11 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<Cota> cotas;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "tb_users_roles",
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "usuario_roles",
             joinColumns = @JoinColumn(name = "usuario_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<UsuarioRoles> roles;
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Roles> roles = new HashSet<>();
 
 
     public UUID getId() {
@@ -86,14 +78,19 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public Set<UsuarioRoles> getRoles() {
+    public List<Cota> getCotas() {
+        return cotas;
+    }
+
+    public void setCotas(List<Cota> cotas) {
+        this.cotas = cotas;
+    }
+
+    public Set<Roles> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<UsuarioRoles> roles) {
+    public void setRoles(Set<Roles> roles) {
         this.roles = roles;
     }
-
-
-
 }

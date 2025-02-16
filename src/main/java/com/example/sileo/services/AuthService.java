@@ -1,20 +1,18 @@
 package com.example.sileo.services;
 
+import com.example.sileo.domain.Roles.Roles;
 import com.example.sileo.domain.Usuario.*;
-import com.example.sileo.domain.Usuario_roles.UsuarioRoles;
 import com.example.sileo.enums.UserRole;
+import com.example.sileo.exeception.GlobalExceptionHandler;
+import com.example.sileo.repositories.RoleRepository;
 import com.example.sileo.repositories.UsuarioRepository;
-import com.example.sileo.repositories.UsuarioRolesRepository;
 import com.example.sileo.security.TokenService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Arrays;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -30,7 +28,10 @@ public class AuthService {
     private TokenService tokenService;
 
     @Autowired
-    private UsuarioRolesRepository usuarioRoleRepository;
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private GlobalExceptionHandler globalExceptionHandler;
 
     @Transactional
     public LoginResponseDTO login(LoginRequestDTO loginDTO) {
@@ -47,27 +48,29 @@ public class AuthService {
     }
 
     @Transactional
-    public RegisterResponseDTO register(@RequestBody @Valid RegisterRequestDTO registerDTO) {
+    public RegisterResponseDTO register(@Valid RegisterRequestDTO registerDTO) {
+        var usuarioExistente = usuarioRepository.findByEmail(registerDTO.getEmail());
 
-        var usuario = usuarioRepository.findByEmail(registerDTO.getEmail());
-
-        if(usuario.isEmpty()) {
-
-            Usuario novoUsuario = new Usuario();
-
-            novoUsuario.setEmail(registerDTO.getEmail());
-            novoUsuario.setNome(registerDTO.getNome());
-            novoUsuario.setCpf(registerDTO.getCpf());
-            novoUsuario.setSenha(passwordEncoder.encode(registerDTO.getSenha()));
-            novoUsuario.setRoles(Set.of(usuarioRoleRepository.findByName(UserRole.USER.name())));
-
-            usuarioRepository.save(novoUsuario);
-
-            String token = tokenService.generateToken(novoUsuario);
-
-            return new RegisterResponseDTO(token, novoUsuario.getNome());
+        if (usuarioExistente.isPresent()) {
+            throw new RuntimeException("Usuário já cadastrado");
         }
 
-        throw new RuntimeException("Usuário já cadastrado");
+        Usuario novoUsuario = new Usuario();
+        novoUsuario.setEmail(registerDTO.getEmail());
+        novoUsuario.setNome(registerDTO.getNome());
+        novoUsuario.setCpf(registerDTO.getCpf());
+        novoUsuario.setSenha(passwordEncoder.encode(registerDTO.getSenha()));
+
+        // Corrigido para usar Optional
+        Roles role = roleRepository.findByName(UserRole.USER.name())
+                .orElseThrow(() -> new RuntimeException("Role não encontrada: " + UserRole.USER.name()));
+
+        novoUsuario.setRoles(Set.of(role));
+
+        usuarioRepository.save(novoUsuario);
+
+        String token = tokenService.generateToken(novoUsuario);
+
+        return new RegisterResponseDTO(token, novoUsuario.getNome());
     }
 }

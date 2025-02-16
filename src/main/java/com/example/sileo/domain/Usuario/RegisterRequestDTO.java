@@ -1,12 +1,17 @@
 package com.example.sileo.domain.Usuario;
 
-import com.example.sileo.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RegisterRequestDTO {
 
     @NotBlank(message = "CPF is mandatory")
@@ -22,6 +27,8 @@ public class RegisterRequestDTO {
     @NotBlank(message = "Password is mandatory")
     @Size(min = 6, message = "Password should have at least 6 characters")
     private String senha;
+
+    private Set<String> roles;
 
     public String getCpf() {
         return cpf;
@@ -55,5 +62,11 @@ public class RegisterRequestDTO {
         this.senha = senha;
     }
 
+    public Set<String> getRoles() {
+        return roles;
+    }
 
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
 }

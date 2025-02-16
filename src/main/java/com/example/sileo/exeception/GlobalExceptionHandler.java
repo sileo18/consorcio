@@ -50,4 +50,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return new ResponseEntity<>("Method not supported", HttpStatus.METHOD_NOT_ALLOWED);
     }
+
+    public class UserAlreadyExistsException extends RuntimeException {
+        public UserAlreadyExistsException(String message) {
+            super(message);
+        }
+    }
+
+    public class RoleNotFoundException extends RuntimeException {
+        public RoleNotFoundException(String message) {
+            super(message);
+        }
+    }
 }

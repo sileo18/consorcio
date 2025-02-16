@@ -33,9 +33,14 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = getToken(request);
         var valid = tokenService.validadeJWT(token);
 
-        if(valid != null) {
-            Usuario usuario = usuarioRepository.findByEmail(valid).orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
-            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        if (valid != null) {
+            Usuario usuario = usuarioRepository.findByEmail(valid)
+                    .orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
+
+            var authorities = usuario.getRoles().stream()
+                    .map(role -> new SimpleGrantedAuthority(role.getName()))
+                    .toList();
+
             var authentication = new UsernamePasswordAuthenticationToken(usuario, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
