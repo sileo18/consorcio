@@ -3,6 +3,7 @@ package com.example.sileo.controller;
 
 import com.example.sileo.domain.Usuario.Usuario;
 import com.example.sileo.domain.Usuario.UsuarioUpdateDTO;
+import com.example.sileo.security.TokenService;
 import com.example.sileo.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -20,6 +21,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private TokenService tokenService;
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -40,6 +44,16 @@ public class UsuarioController {
         }
 
         return ResponseEntity.ok(usuarioAtutalizado);
+
+    }
+
+    @PostMapping("validate-token")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<?> getUserIdFromToken(@RequestBody String token) {
+
+        var decodedJWT = tokenService.getIdFromToken(token);
+
+        return ResponseEntity.ok(decodedJWT);
 
     }
 

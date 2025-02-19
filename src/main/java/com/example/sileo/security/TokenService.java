@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.example.sileo.domain.Usuario.Usuario;
@@ -27,6 +28,7 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("login-with-jwt")
                     .withSubject(user.getEmail())
+                    .withClaim("userId", user.getId().toString())
                     .withExpiresAt(getExpirationTime())
                     .sign(algorithm);
 
@@ -52,5 +54,20 @@ public class TokenService {
 
     private Instant getExpirationTime() {
         return LocalDateTime.now().plusHours(24).toInstant(ZoneOffset.of("-03:00"));
+    }
+
+    public String   getIdFromToken(String token) {
+
+        try {
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(secret))
+                    .withIssuer("login-with-jwt")
+                    .build()
+                    .verify(token);
+
+            return decodedJWT.getClaim("userId").asString();
+        } catch (JWTVerificationException e) {
+            throw new RuntimeException("Invalid Token");
+        }
+
     }
 }
