@@ -19,10 +19,15 @@ import java.util.Map;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    protected ResponseEntity<APIError> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+                APIError error = new APIError();
+                error.setMessage(ex.getMessage());
+                error.setTitulo("Reveja os argumentos passados!");
+                error.setTimestamp(System.currentTimeMillis());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -32,24 +37,49 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<APIError> handleRuntimeException(RuntimeException ex) {
-        APIError error = new APIError(ex.getMessage());
+        APIError error = new APIError();
+        error.setMessage(ex.getMessage());
+        error.setTitulo("");
+        error.setTimestamp(System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    private ResponseEntity<String> handleUsernameNotFoundException(UsernameNotFoundException ex, WebRequest request) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    private ResponseEntity<APIError> handleUsernameNotFoundException(UsernameNotFoundException ex, WebRequest request) {
+        APIError error = new APIError();
+        error.setMessage(ex.getMessage());
+        error.setTitulo("Usuário não encontrado, reveja o argumento passado.");
+        error.setTimestamp(System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    private ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
-        return new ResponseEntity<>("Data integrity violation", HttpStatus.CONFLICT);
+    private ResponseEntity<APIError> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
+        APIError error = new APIError();
+        error.setMessage("Data integrity violation");
+        error.setTitulo("Erro de integridade de dados");
+        error.setTimestamp(System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<APIError> handleGenericException(Exception ex) {
+        APIError error = new APIError();
+        error.setMessage("Ocorreu um erro inesperado.");
+        error.setTitulo("Erro Interno");
+        error.setTimestamp(System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
 
-    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return new ResponseEntity<>("Method not supported", HttpStatus.METHOD_NOT_ALLOWED);
+    protected ResponseEntity<APIError> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        APIError error = new APIError();
+        error.setMessage("Método não suportado: " + ex.getMethod());
+        error.setTitulo("Método HTTP não permitido");
+        error.setTimestamp(System.currentTimeMillis());
+
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(error);
     }
 
     public class UserAlreadyExistsException extends RuntimeException {
