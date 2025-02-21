@@ -28,14 +28,15 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("login-with-jwt")
                     .withSubject(user.getEmail())
-                    .withClaim("userId", user.getId().toString())
+                    .withClaim("userCpf", user.getCpf())
+                    .withClaim("userName", user.getNome())
                     .withExpiresAt(getExpirationTime())
                     .sign(algorithm);
 
             return token;
 
         } catch (JWTCreationException e) {
-            throw new RuntimeException("Error creating token");
+            throw new JWTCreationException("Error creating token", e);
         }
     }
 
@@ -48,7 +49,7 @@ public class TokenService {
                     .getSubject();
 
         } catch (JWTVerificationException e) {
-            return null;
+            throw new JWTVerificationException("Token inválido");
         }
     }
 
@@ -56,18 +57,4 @@ public class TokenService {
         return LocalDateTime.now().plusHours(24).toInstant(ZoneOffset.of("-03:00"));
     }
 
-    public String   getIdFromToken(String token) {
-
-        try {
-            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(secret))
-                    .withIssuer("login-with-jwt")
-                    .build()
-                    .verify(token);
-
-            return decodedJWT.getClaim("userId").asString();
-        } catch (JWTVerificationException e) {
-            throw new RuntimeException("Invalid Token");
-        }
-
-    }
 }
