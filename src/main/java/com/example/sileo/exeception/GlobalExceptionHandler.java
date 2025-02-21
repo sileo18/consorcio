@@ -13,22 +13,12 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
-
-    protected ResponseEntity<APIError> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-
-                APIError error = new APIError();
-                error.setMessage(ex.getMessage());
-                error.setTitulo("Reveja os argumentos passados!");
-                error.setTimestamp(System.currentTimeMillis());
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-
-    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     private ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
@@ -80,6 +70,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         error.setTimestamp(System.currentTimeMillis());
 
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(error);
+    }
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers,
+            HttpStatus status, WebRequest request) {
+
+        List<String> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(x -> x.getDefaultMessage())
+                .collect(Collectors.toList());
+
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
     public class UserAlreadyExistsException extends RuntimeException {
