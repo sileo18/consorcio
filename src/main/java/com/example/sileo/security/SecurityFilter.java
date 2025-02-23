@@ -36,27 +36,38 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // Verifica se a requisição é para uma rota permitida
+        String path = request.getRequestURI();
+        if (path.equals("/auth/login") || path.equals("/auth/register")) {
+            // Se for uma rota permitida, apenas continue a cadeia de filtros
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // Se não for uma rota permitida, tente validar o token
         var token = getToken(request);
-        var valid = tokenService.validadeJWT(token);
+        if (token != null) {
+            var valid = tokenService.validateJWT(token);
 
-        if (valid != null) {
-            Usuario usuario = usuarioRepository.findByEmail(valid)
-                    .orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
+            if (valid != null) {
+                Usuario usuario = usuarioRepository.findByEmail(valid)
+                        .orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
 
-            var authorities = usuario.getRoles().stream()
-                    .map(role -> {
-                        logger.info("Role encontrada: {}", role.getName());
-                        return new SimpleGrantedAuthority(role.getName());
-                    })
-                    .toList();
+                var authorities = usuario.getRoles().stream()
+                        .map(role -> {
+                            logger.info("Role encontrada: {}", role.getName());
+                            return new SimpleGrantedAuthority(role.getName());
+                        })
+                        .toList();
 
-            // Logando as roles do usuário
-            logger.info("Usuário autenticado: {}, Roles: {}", usuario.getEmail(), authorities);
+                // Logando as roles do usuário
+                logger.info("Usuário autenticado: {}, Roles: {}", usuario.getEmail(), authorities);
 
-            var authentication = new UsernamePasswordAuthenticationToken(usuario, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                var authentication = new UsernamePasswordAuthenticationToken(usuario, null, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            logger.info("Autenticação configurada para o usuário: {}", usuario.getEmail());
+                logger.info("Autenticação configurada para o usuário: {}", usuario.getEmail());
+            }
         }
 
         filterChain.doFilter(request, response);

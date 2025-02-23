@@ -47,15 +47,5 @@ public class UsuarioController {
 
     }
 
-    @PostMapping("validate-token")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> getUserIdFromToken(@RequestBody String token) {
-
-        var decodedJWT = tokenService.getIdFromToken(token);
-
-        return ResponseEntity.ok(decodedJWT);
-
-    }
-
 
 }
