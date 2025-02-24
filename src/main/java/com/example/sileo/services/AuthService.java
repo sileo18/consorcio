@@ -41,7 +41,7 @@ public class AuthService {
 
         if (passwordEncoder.matches(loginDTO.getSenha(), usuario.getSenha())) {
             String token = tokenService.generateToken(usuario);
-            return new LoginResponseDTO(token, usuario.getNome());
+            return new LoginResponseDTO(token, usuario.getNome(), usuario.getId());
         }
 
         throw new RuntimeException("Senha inválida");

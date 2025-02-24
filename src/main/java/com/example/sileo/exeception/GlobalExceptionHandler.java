@@ -1,5 +1,6 @@
 package com.example.sileo.exeception;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     private ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(JWTVerificationException.class)
+    public ResponseEntity<APIError> handleJWTVerificationException(JWTVerificationException ex, WebRequest request) {
+        APIError error = new APIError();
+        error.setMessage("Token inválido ou expirado.");
+        error.setTitulo("Erro de Autenticação");
+        error.setTimestamp(System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
     @ExceptionHandler(RuntimeException.class)

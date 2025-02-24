@@ -5,6 +5,8 @@ import com.example.sileo.repositories.UsuarioRepository;
 import com.example.sileo.security.TokenService;
 import com.example.sileo.services.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +29,8 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "Auth the user", description = "Auth the user")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginDTO) {
-
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginDTO, HttpServletResponse response) {
+        
         LoginResponseDTO loginResponseDTO = authService.login(loginDTO);
 
         return ResponseEntity.ok(loginResponseDTO);
