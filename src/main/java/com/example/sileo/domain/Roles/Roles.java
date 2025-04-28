@@ -8,7 +8,6 @@ import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "roles")
 public class Roles {
 
